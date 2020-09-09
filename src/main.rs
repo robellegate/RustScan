@@ -11,16 +11,15 @@ use scanner::Scanner;
 mod port_strategy;
 use port_strategy::PortStrategy;
 
+use cidr_utils::cidr::IpCidr;
 use colorful::Color;
 use colorful::Colorful;
 use futures::executor::block_on;
 use rlimit::Resource;
 use rlimit::{getrlimit, setrlimit};
-
 use std::collections::HashMap;
 use std::net::ToSocketAddrs;
 use std::process::Command;
-use std::str::FromStr;
 use std::{net::IpAddr, time::Duration};
 
 extern crate colorful;
@@ -51,7 +50,7 @@ fn main() {
         print_opening();
     }
 
-    let ips: Vec<IpAddr> = parse_ips(&opts);
+    let ips: Vec<IpAddr> = parse_ips_or_cidrs(&opts);
 
     if ips.is_empty() {
         warning!("No IPs could be resolved, aborting scan.", false);
@@ -183,12 +182,12 @@ fn build_nmap_arguments<'a>(
     arguments
 }
 
-fn parse_ips(opts: &Opts) -> Vec<IpAddr> {
+fn parse_ips_or_cidrs(opts: &Opts) -> Vec<IpAddr> {
     let mut ips: Vec<IpAddr> = Vec::new();
 
     for ip_or_host in &opts.ips_or_hosts {
-        match IpAddr::from_str(ip_or_host) {
-            Ok(ip) => ips.push(ip),
+        match IpCidr::from_str(ip_or_host) {
+            Ok(cidr) => cidr.iter().for_each(|ip| ips.push(ip)),
             _ => match format!("{}:{}", &ip_or_host, 80).to_socket_addrs() {
                 Ok(mut iter) => ips.push(iter.nth(0).unwrap().ip()),
                 _ => {
@@ -262,7 +261,9 @@ fn infer_batch_size(opts: &Opts, ulimit: rlimit::rlim) -> u16 {
 
 #[cfg(test)]
 mod tests {
-    use crate::{adjust_ulimit_size, infer_batch_size, parse_ips, print_opening, Opts, ScanOrder};
+    use crate::{
+        adjust_ulimit_size, infer_batch_size, parse_ips_or_cidrs, print_opening, Opts, ScanOrder,
+    };
 
     #[test]
     fn batch_size_lowered() {
@@ -392,7 +393,7 @@ mod tests {
             no_config: false,
             no_nmap: false,
         };
-        let ips = parse_ips(&opts);
+        let ips = parse_ips_or_cidrs(&opts);
 
         assert_eq!(2, ips.len());
     }
@@ -413,7 +414,7 @@ mod tests {
             no_config: false,
             no_nmap: false,
         };
-        let ips = parse_ips(&opts);
+        let ips = parse_ips_or_cidrs(&opts);
 
         assert_eq!(1, ips.len());
     }
@@ -434,7 +435,7 @@ mod tests {
             no_config: false,
             no_nmap: false,
         };
-        let ips = parse_ips(&opts);
+        let ips = parse_ips_or_cidrs(&opts);
 
         assert_eq!(0, ips.len());
     }
