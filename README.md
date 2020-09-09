@@ -24,7 +24,7 @@
 | <p align="center"><a href="https://hub.docker.com/r/cmnatic/rustscan">🐋 Docker (Recommended) </a></p>            | <p align="center"><a href="https://github.com/RustScan/RustScan/releases">👩‍💻 Kali / Debian </p>                    | <p align="center"><a href="https://aur.archlinux.org/packages/rustscan/">🏗️ Arch </a></p>                       | <p align="center"><a href="https://crates.io/crates/rustscan">🔧 Cargo (Universal) </a></p>                     |
 | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | <p align="center"><img src="https://github.com/RustScan/RustScan/blob/master/pictures/docker.png?raw=true" /></p> | <p align="center"><img src="https://github.com/RustScan/RustScan/blob/master/pictures/kali.png?raw=true" /></p>    | <p align="center"><img src="https://github.com/RustScan/RustScan/blob/master/pictures/arch.png?raw=true" /></p> | <p align="center"><img src="https://github.com/RustScan/RustScan/blob/master/pictures/rust.png?raw=true" /></p> |
-| `docker pull rustscan/rustscan:alpine` <p>[Usage](https://github.com/RustScan/RustScan#docker-whale)              | [Read the install guide](https://github.com/brandonskerritt/RustScan/blob/master/README.md#%EF%B8%8F-debian--kali) | `yay -S rustscan`                                                                                               | `cargo install rustscan`                                                                                        |
+| `docker pull rustscan/rustscan:alpine` <p>[Usage](https://github.com/RustScan/RustScan#docker-whale)              | [Read the install guide](https://github.com/RustScan/RustScan/blob/master/README.md#%EF%B8%8F-debian--kali) | `yay -S rustscan`                                                                                               | `cargo install rustscan`                                                                                        |
 
 <hr>
 
@@ -111,7 +111,7 @@ Note: sometimes Rust doesn't add Cargo to the path. Please see [this issue](http
 
 Download the .deb file from the releases page:
 
-[https://github.com/brandonskerritt/RustScan/releases](https://github.com/brandonskerritt/RustScan/releases)
+[https://github.com/RustScan/RustScan/releases](https://github.com/RustScan/RustScan/releases)
 
 Run the command `dpkg -i` on the file.
 
@@ -364,7 +364,7 @@ Windows Subsystem for Linux does not support ulimit (see issue #39).
 The best way is to use it on a host computer, in Docker, or in a VM that isn't WSL.
 
 **Automatic Ulimit updating**
-We are currently working on automatic Ulimit updating. If it is too high, it will lower itself. If it is too low, it will suggest a higher Ulimit. Watch [this issue](https://github.com/brandonskerritt/RustScan/issues/25) for more.
+We are currently working on automatic Ulimit updating. If it is too high, it will lower itself. If it is too low, it will suggest a higher Ulimit. Watch [this issue](https://github.com/RustScan/RustScan/issues/25) for more.
 
 ## 🔌 Nmap Custom Flags
 
